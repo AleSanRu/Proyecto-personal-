@@ -1,7 +1,8 @@
+export const fetchCache = 'force-no-store';
+export const dynamic = 'force-dynamic';
+
 import { createClient } from '@/utils/supabase/server';
 import { Suspense } from 'react';
-
-// Elimina: export const dynamic = "force-dynamic";
 
 async function StatsCardsContent() {
   const supabase = await createClient();

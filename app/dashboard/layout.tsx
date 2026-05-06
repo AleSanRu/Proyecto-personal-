@@ -2,7 +2,8 @@ import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import DashboardNav from '@/components/DashboardNav';
 
-// Elimina: export const dynamic = "force-dynamic";
+export const fetchCache = 'force-no-store'; // 👈 Esta línea evita el prerenderizado
+export const dynamic = 'force-dynamic';      // 👈 Esta línea fuerza SSR dinámico
 
 export default async function DashboardLayout({
   children,
