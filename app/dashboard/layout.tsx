@@ -1,8 +1,8 @@
-export const dynamic = "force-dynamic";
-
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import DashboardNav from '@/components/DashboardNav';
+
+// Elimina: export const dynamic = "force-dynamic";
 
 export default async function DashboardLayout({
   children,

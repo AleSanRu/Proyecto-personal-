@@ -1,9 +1,8 @@
-export const dynamic = "force-dynamic";
-
 import { createClient } from '@/utils/supabase/server';
 import { Suspense } from 'react';
 
-// Este componente ahora es la versión "cliente" de las estadísticas
+// Elimina: export const dynamic = "force-dynamic";
+
 async function StatsCardsContent() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
@@ -14,7 +13,7 @@ async function StatsCardsContent() {
         <div className="p-5">
           <div className="flex items-center">
             <div className="flex-shrink-0">
-              <svg className="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 20 20" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
             </div>
@@ -32,7 +31,7 @@ async function StatsCardsContent() {
         <div className="p-5">
           <div className="flex items-center">
             <div className="flex-shrink-0">
-              <svg className="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 20 20" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
@@ -74,7 +73,6 @@ function WelcomePanel() {
   );
 }
 
-// Este es el componente principal que se exporta
 export default function DashboardPage() {
   return (
     <div className="space-y-6">
