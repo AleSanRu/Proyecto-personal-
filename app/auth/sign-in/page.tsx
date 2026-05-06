@@ -1,46 +1,41 @@
 'use client';
 
 import { createClient } from '@/utils/supabase/client';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-export default function ForgotPasswordPage() {
+export default function SignInPage() {
+  const router = useRouter();
   const supabase = createClient();
   const [email, setEmail] = useState('');
-  const [message, setMessage] = useState<string | null>(null);
+  const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const handleResetRequest = async (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
-    setMessage(null);
 
-    // Obtener la URL actual para construir el redirectTo
-    const origin = window.location.origin;
-
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${origin}/auth/callback?redirect_to=/auth/update-password`,
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
     });
 
     if (error) {
       setError(error.message);
       setLoading(false);
     } else {
-      setMessage('¡Revisa tu correo! Te hemos enviado un enlace para restablecer tu contraseña.');
-      setLoading(false);
+      router.push('/dashboard');
     }
   };
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center p-4">
       <div className="w-full max-w-md space-y-6 rounded-lg border border-gray-200 bg-white p-8 shadow-md">
-        <h1 className="text-2xl font-bold text-center">Recuperar Contraseña</h1>
-        <p className="text-center text-gray-600 text-sm">
-          Te enviaremos un enlace a tu correo para que puedas crear una nueva contraseña.
-        </p>
-
-        <form onSubmit={handleResetRequest} className="space-y-4">
+        <h1 className="text-2xl font-bold text-center">Iniciar Sesión</h1>
+        
+        <form onSubmit={handleLogin} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700">
               Correo electrónico
@@ -51,7 +46,19 @@ export default function ForgotPasswordPage() {
               onChange={(e) => setEmail(e.target.value)}
               required
               className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2"
-              placeholder="tu@email.com"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Contraseña
+            </label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2"
             />
           </div>
 
@@ -61,26 +68,26 @@ export default function ForgotPasswordPage() {
             </div>
           )}
 
-          {message && (
-            <div className="rounded-md bg-green-50 p-3 text-sm text-green-600">
-              {message}
-            </div>
-          )}
-
           <button
             type="submit"
             disabled={loading}
             className="w-full rounded-md bg-blue-600 py-2 text-white hover:bg-blue-700 disabled:opacity-50"
           >
-            {loading ? 'Enviando...' : 'Enviar enlace de recuperación'}
+            {loading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
           </button>
         </form>
 
         <p className="text-center text-sm text-gray-600">
-          <a href="/auth/sign-in" className="text-blue-600 hover:underline">
-            Volver al inicio de sesión
+          ¿No tienes cuenta?{' '}
+          <a href="/auth/sign-up" className="text-blue-600 hover:underline">
+            Regístrate
           </a>
         </p>
+                <div className="text-right">
+          <a href="/auth/forgot-password" className="text-sm text-blue-600 hover:underline">
+            ¿Olvidaste tu contraseña?
+          </a>
+        </div>
       </div>
     </div>
   );
