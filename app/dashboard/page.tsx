@@ -1,14 +1,12 @@
+export const dynamic = "force-dynamic";
+
 import { createClient } from '@/utils/supabase/server';
-import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
 
-// Componente de estadísticas (puedes agregar datos reales después)
-async function StatsCards() {
+// Este componente ahora es la versión "cliente" de las estadísticas
+async function StatsCardsContent() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-
-  // Ejemplo: contar algo de una tabla (crea la tabla después)
-  // const { count: totalUsers } = await supabase.from('profiles').select('*', { count: 'exact', head: true });
 
   return (
     <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
@@ -30,7 +28,6 @@ async function StatsCards() {
         </div>
       </div>
 
-      {/* Más tarjetas de estadísticas */}
       <div className="bg-white overflow-hidden shadow rounded-lg">
         <div className="p-5">
           <div className="flex items-center">
@@ -52,7 +49,6 @@ async function StatsCards() {
   );
 }
 
-// Panel de bienvenida
 function WelcomePanel() {
   return (
     <div className="bg-white shadow rounded-lg p-6">
@@ -78,16 +74,20 @@ function WelcomePanel() {
   );
 }
 
-export default async function DashboardPage() {
+// Este es el componente principal que se exporta
+export default function DashboardPage() {
   return (
     <div className="space-y-6">
-      <Suspense fallback={<div>Cargando estadísticas...</div>}>
-        <StatsCards />
+      <Suspense fallback={
+        <div className="bg-white shadow rounded-lg p-5 text-center">
+          <p className="text-gray-500">Cargando información del usuario...</p>
+        </div>
+      }>
+        <StatsCardsContent />
       </Suspense>
       
       <WelcomePanel />
       
-      {/* Espacio para agregar más componentes */}
       <div className="bg-white shadow rounded-lg p-6">
         <h3 className="text-lg font-medium text-gray-900">Contenido principal</h3>
         <p className="mt-2 text-gray-600">
